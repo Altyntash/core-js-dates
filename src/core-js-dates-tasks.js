@@ -73,8 +73,13 @@ function getDayName(date) {
  * Date('2024-02-13T00:00:00Z') => Date('2024-02-16T00:00:00Z')
  * Date('2024-02-16T00:00:00Z') => Date('2024-02-23T00:00:00Z')
  */
-function getNextFriday(/* date */) {
-  throw new Error('Not implemented');
+function getNextFriday(date) {
+  const day = new Date(date);
+  day.setUTCDate(day.getUTCDate() + 1);
+  while (day.getUTCDay() !== 5) {
+    day.setUTCDate(day.getUTCDate() + 1);
+  }
+  return day;
 }
 
 /**
@@ -144,8 +149,8 @@ function isDateInPeriod(date, period) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(/* date */) {
-  throw new Error('Not implemented');
+function formatDate(date) {
+  return new Date(date).toLocaleString('en', { timeZone: 'UTC' });
 }
 
 /**
@@ -160,8 +165,17 @@ function formatDate(/* date */) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountWeekendsInMonth(month, year) {
+  let weekend = 0;
+  const monthDays = new Date(year, month, 0).getDate();
+  for (let i = 1; i <= monthDays; i += 1) {
+    const current = new Date(year, month - 1, i);
+
+    if (current.getDay() === 6 || current.getDay() === 0) {
+      weekend += 1;
+    }
+  }
+  return weekend;
 }
 
 /**
